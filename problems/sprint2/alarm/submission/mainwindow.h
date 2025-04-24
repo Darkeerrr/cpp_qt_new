@@ -25,8 +25,19 @@ public:
 
 private slots:
     // Тут объявите слоты.
+    void on_pb_start_stop_clicked();
+
+private:
+    void ChangeAudio();
+    void OnTimer();
+    void ProcessAlarm();
+    QString TimeToString(QTime time);
+    QString TimeToString(std::chrono::milliseconds ms);
 
 private:
     Ui::MainWindow *ui;
     QDateTime alarm_moment_;
+    prac::QTimer timer_one_sec_{this};
+    prac::QMediaPlayer player_{this};
+    QAudioOutput audio_output_{this};
 };

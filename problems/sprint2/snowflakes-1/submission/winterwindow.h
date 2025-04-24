@@ -69,6 +69,13 @@ public:
         //    ...
         //    params_.rotation + 60 * 5
         //    Вызывайте DrawRotatedVector в цикле, делающем шесть итераций.
+        QPen pen(params_.color);
+        pen.setWidthF(params_.line_width);
+        painter.setPen(pen);
+        for (int i = 0; i < 6; ++i) {
+            double angle = params_.rotation + 60 * i;
+            DrawRotatedVector(painter, params_.center, angle, params_.size);
+        }
     }
 
     QString GetDescription() const {
@@ -85,7 +92,7 @@ private:
 
         // Нарисуйте линию от точки center до точки end.
         // Используйте метод drawLine класса painter.
-
+        painter.drawLine(QPointF(center.x, center.y), QPointF(end.x, end.y));
         return end;
     }
 
