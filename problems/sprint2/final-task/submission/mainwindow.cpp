@@ -146,7 +146,7 @@ void MainWindow::on_tb_add_clicked()
     input_number_ = "0";
     current_operation_ = Operation::ADDITION;
     QString operation = OpToString(current_operation_);
-    double left_number = active_number_;
+    Number left_number = active_number_;
     calculator_.SetLeftOperand(left_number);
     ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
 }
@@ -157,7 +157,7 @@ void MainWindow::on_tb_substract_clicked()
     input_number_ = "0";
     current_operation_ = Operation::SUBTRACTION;
     QString operation = OpToString(current_operation_);
-    double left_number = active_number_;
+    Number left_number = active_number_;
     calculator_.SetLeftOperand(left_number);
     ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
 }
@@ -168,7 +168,7 @@ void MainWindow::on_tb_multiplicate_clicked()
     input_number_ = "0";
     current_operation_ = Operation::MULTIPLICATION;
     QString operation = OpToString(current_operation_);
-    double left_number = active_number_;
+    Number left_number = active_number_;
     calculator_.SetLeftOperand(left_number);
     ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
 }
@@ -179,7 +179,7 @@ void MainWindow::on_tb_divide_clicked()
     input_number_ = "0";
     current_operation_ = Operation::DIVISION;
     QString operation = OpToString(current_operation_);
-    double left_number = active_number_;
+    Number left_number = active_number_;
     calculator_.SetLeftOperand(left_number);
     ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
 }
@@ -190,7 +190,7 @@ void MainWindow::on_tb_power_clicked()
     input_number_ = "0";
     current_operation_ = Operation::POWER;
     QString operation = OpToString(current_operation_);
-    double left_number = active_number_;
+    Number left_number = active_number_;
     calculator_.SetLeftOperand(left_number);
     ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
 }
@@ -244,25 +244,27 @@ void MainWindow::on_tb_equal_clicked()
     if (current_operation_ == Operation::NO_OPERATION){
         ui->l_result->setText("0");
         ui->l_formula->setText("");
+        return;
     } else {
-        double right_number = input_number_.toDouble();
-        double result;
+        Number right_number = input_number_.toDouble();
+        calculator_.SetRightOperand(right_number);
+        Number result;
 
         switch (current_operation_) {
         case Operation::ADDITION:
-            result = calculator_.Add(right_number);
+            result = calculator_.Add();
             break;
         case Operation::SUBTRACTION:
-            result = calculator_.Sub(right_number);
+            result = calculator_.Sub();
             break;
         case Operation::MULTIPLICATION:
-            result = calculator_.Mul(right_number);
+            result = calculator_.Mul();
             break;
         case Operation::DIVISION:
-            result = calculator_.Div(right_number);
+            result = calculator_.Div();
             break;
         case Operation::POWER:
-            result = calculator_.Pow(right_number);
+            result = calculator_.Pow();
             break;
         default:
             return;
@@ -278,6 +280,7 @@ void MainWindow::on_tb_equal_clicked()
 
         input_number_ = "0";
         active_number_ = result;
+        current_operation_ = Operation::NO_OPERATION;
     }
 }
 

@@ -10,31 +10,37 @@ bool RunCalculatorCycle ();
 
 class Calculator {
 public:
-    void SetLeftOperand(double value){
+    void SetLeftOperand(Number value){
         left_operand_ = value;
     }
-    double GetLeftOperand(){
+
+    void SetRightOperand(Number value) {
+        right_operand_ = value;
+    }
+
+    Number GetLeftOperand(){
         return left_operand_;
     }
-    double Add(double right_operand) const {
-        return left_operand_ + right_operand;
+    Number Add() const {
+        return left_operand_ + right_operand_;
     }
-    double Sub(double right_operand) const {
-        return left_operand_ - right_operand;
+    Number Sub() const {
+        return left_operand_ - right_operand_;
     }
-    double Mul(double right_operand) const {
-        return left_operand_ * right_operand;
+    Number Mul() const {
+        return left_operand_ * right_operand_;
     }
-    double Div(double right_operand) const {
-        if (right_operand == 0){
+    Number Div() const {
+        if (right_operand_ == 0){
             return 1;
         }
-        return left_operand_ / right_operand;
+        return left_operand_ / right_operand_;
     }
-    double Pow(double right_operand) const {
-        return pow(left_operand_, right_operand);
+    Number Pow() const {
+        return pow(left_operand_, right_operand_);
     }
 
 private:
-    double left_operand_ = 0.0;
+    Number left_operand_ = 0.0;
+    Number right_operand_ = 0.0;
 };
