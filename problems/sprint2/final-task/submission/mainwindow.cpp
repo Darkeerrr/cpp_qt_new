@@ -56,7 +56,11 @@ QString OpToString(Operation op) {
 void MainWindow::SetText(const QString& text) {
     input_number_ = NormalizeNumber(text);
     ui->l_result->setText(input_number_);
-    active_number_ = input_number_.toDouble();
+    if (current_operation_ == Operation::NO_OPERATION){
+        left_number_ = input_number_.toDouble();
+    } else {
+        right_number_ = input_number_.toDouble();
+    }
 }
 
 void MainWindow::AddText(const QString& suffix) {
@@ -143,56 +147,46 @@ void MainWindow::on_tb_backspace_clicked()
 
 void MainWindow::on_tb_add_clicked()
 {
-    input_number_ = "0";
     current_operation_ = Operation::ADDITION;
     QString operation = OpToString(current_operation_);
-    Number left_number = active_number_;
-    calculator_.SetLeftOperand(left_number);
-    ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
+    ui->l_formula->setText(QString("%1 %2 =").arg(left_number_).arg(operation));
+    input_number_ = "0";
 }
 
 
 void MainWindow::on_tb_substract_clicked()
 {
-    input_number_ = "0";
     current_operation_ = Operation::SUBTRACTION;
     QString operation = OpToString(current_operation_);
-    Number left_number = active_number_;
-    calculator_.SetLeftOperand(left_number);
-    ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
+    ui->l_formula->setText(QString("%1 %2 =").arg(left_number_).arg(operation));
+    input_number_ = "0";
 }
 
 
 void MainWindow::on_tb_multiplicate_clicked()
 {
-    input_number_ = "0";
     current_operation_ = Operation::MULTIPLICATION;
     QString operation = OpToString(current_operation_);
-    Number left_number = active_number_;
-    calculator_.SetLeftOperand(left_number);
-    ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
+    ui->l_formula->setText(QString("%1 %2 =").arg(left_number_).arg(operation));
+    input_number_ = "0";
 }
 
 
 void MainWindow::on_tb_divide_clicked()
 {
-    input_number_ = "0";
     current_operation_ = Operation::DIVISION;
     QString operation = OpToString(current_operation_);
-    Number left_number = active_number_;
-    calculator_.SetLeftOperand(left_number);
-    ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
+    ui->l_formula->setText(QString("%1 %2 =").arg(left_number_).arg(operation));
+    input_number_ = "0";
 }
 
 
 void MainWindow::on_tb_power_clicked()
 {
-    input_number_ = "0";
     current_operation_ = Operation::POWER;
     QString operation = OpToString(current_operation_);
-    Number left_number = active_number_;
-    calculator_.SetLeftOperand(left_number);
-    ui->l_formula->setText(QString("%1 %2 =").arg(left_number).arg(operation));
+    ui->l_formula->setText(QString("%1 %2 =").arg(left_number_).arg(operation));
+    input_number_ = "0";
 }
 
 
@@ -209,7 +203,8 @@ void MainWindow::on_tb_negate_clicked()
 void MainWindow::on_tb_reset_clicked()
 {
     input_number_ = "0";
-    active_number_ = 0;
+    right_number_ = 0;
+    left_number_ = 0;
     ui->l_result->setText("0");
     ui->l_formula->setText("");
 }
@@ -217,7 +212,7 @@ void MainWindow::on_tb_reset_clicked()
 
 void MainWindow::on_tb_ms_clicked()
 {
-    memory_value_ = active_number_;
+    memory_value_ = left_number_;
     has_memory_ = true;
     ui->l_memory->setText("M");
 }
@@ -246,8 +241,8 @@ void MainWindow::on_tb_equal_clicked()
         ui->l_formula->setText("");
         return;
     } else {
-        Number right_number = input_number_.toDouble();
-        calculator_.SetRightOperand(right_number);
+        calculator_.SetLeftOperand(left_number_);
+        calculator_.SetRightOperand(right_number_);
         Number result;
 
         switch (current_operation_) {
@@ -271,7 +266,7 @@ void MainWindow::on_tb_equal_clicked()
         }
 
         QString left_str = QString::number(calculator_.GetLeftOperand());
-        QString right_str = QString::number(right_number);
+        QString right_str = QString::number(right_number_);
         QString result_str = QString::number(result);
         QString operation_str = OpToString(current_operation_);
 
@@ -279,7 +274,7 @@ void MainWindow::on_tb_equal_clicked()
         ui->l_formula->setText(QString("%1 %2 %3 =").arg(left_str).arg(operation_str).arg(right_str));
 
         input_number_ = "0";
-        active_number_ = result;
+        left_number_ = result;
         current_operation_ = Operation::NO_OPERATION;
     }
 }

@@ -74,7 +74,8 @@ private:
     Ui::MainWindow* ui;
     Calculator calculator_;
     QString input_number_;
-    Number active_number_;
+    Number left_number_;
+    Number right_number_;
     Operation current_operation_ = Operation::NO_OPERATION;
     Number memory_value_ = 0.0;
     bool has_memory_ = false;
